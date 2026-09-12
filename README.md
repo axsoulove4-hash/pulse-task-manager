@@ -7,7 +7,7 @@ Native, customizable Linux task manager with process trees, application icons, s
 ## Fonctionnalités / Features
 
 - **Français / English** : choisissez la langue dans Réglages / choose the language in Settings (redémarrage requis / restart required).
-- Onglets Vue générale, Processeur, Carte graphique et Températures / Overview, CPU, Graphics card and Temperatures tabs.
+- Onglets Vue générale, Processeur (graphique par cœur), Cartes graphiques (un onglet par carte) et Températures / Overview, CPU (one chart per core), Graphics cards (one tab per card) and Temperatures tabs.
 - Lecture GPU et sondes thermiques via `/sys` quand le pilote les expose / GPU telemetry and thermal sensors through `/sys` when exposed by the driver.
 - Vue performances CPU, mémoire, réseau, disques et swap / CPU, memory, network, disk and swap charts.
 - Processus classés par catégories et sous-processus repliables / categorized processes with collapsible children.
