@@ -1,0 +1,11 @@
+build/
+dist/*
+dist/*.log
+dist/*.png
+launch.log
+pulse-*.png
+*.core
+.cache/
+.DS_Store
+main.cpp.before-*
+plasma-before-pin.backup
