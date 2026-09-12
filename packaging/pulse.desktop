@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Pulse
+Comment=Gestionnaire de tâches Linux
+Exec=pulse
+Icon=pulse
+Terminal=false
+Categories=System;Monitor;
