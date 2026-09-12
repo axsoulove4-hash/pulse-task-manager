@@ -172,6 +172,7 @@ class Window:public QMainWindow {
  }
  auto priority=new QPushButton("Priorité…");actions->addWidget(priority);connect(priority,&QPushButton::clicked,this,[this]{changePriority();});
  auto details=new QPushButton(T("Détails","Details"));actions->addWidget(details);connect(details,&QPushButton::clicked,this,[this]{showDetails();});
+ auto exportCsv=new QPushButton(T("Exporter CSV","Export CSV"));actions->addWidget(exportCsv);connect(exportCsv,&QPushButton::clicked,this,[this]{exportProcessesCsv();});
  pv->addLayout(actions);pages->addWidget(processes);
 
  connect(table,&QTreeWidget::itemDoubleClicked,this,[this](QTreeWidgetItem *item,int){
@@ -401,8 +402,8 @@ class Window:public QMainWindow {
  menu.exec(table->viewport()->mapToGlobal(pos));if(running)timer.start();
  }
 
- void showDetails(){Proc p;if(!target(p))return;QMessageBox box(this);box.setWindowTitle("Détails processus");box.setTextFormat(Qt::PlainText);box.setText(p.name+"\nPID : "+QString::number(p.pid)+"\nUtilisateur : "+p.user+"\nMémoire : "+bytes(p.rss)+"\nCPU total : "+QString::number(p.cpu,'f',1)+" %\nPriorité : "+QString::number(p.nice));box.setDetailedText(p.command.isEmpty()?"Commande indisponible":p.command);box.exec();}
-
+ void showDetails(){Proc p;if(!target(p))return;QMessageBox box(this);box.setWindowTitle(T("Détails processus","Process details"));box.setTextFormat(Qt::PlainText);box.setText(p.name+"\nPID : "+QString::number(p.pid)+"\nUtilisateur : "+p.user+"\nMémoire : "+bytes(p.rss)+"\nCPU total : "+QString::number(p.cpu,'f',1)+" %\nPriorité : "+QString::number(p.nice));box.setDetailedText(p.command.isEmpty()?T("Commande indisponible","Command unavailable"):p.command);box.exec();}
+ void exportProcessesCsv(){QString path=QFileDialog::getSaveFileName(this,T("Exporter les processus","Export processes"),QDir::homePath()+"/pulse-processes.csv","CSV (*.csv)");if(path.isEmpty())return;QFile f(path);if(!f.open(QIODevice::WriteOnly|QIODevice::Text)){QMessageBox::warning(this,T("Export impossible","Export failed"),f.errorString());return;}QTextStream out(&f);out<<"name,pid,cpu,memory,user,state,priority\n";for(auto it=rows.cbegin();it!=rows.cend();++it){const auto&p=it.value();QStringList cols{p.name,QString::number(p.pid),QString::number(p.cpu,'f',1),QString::number(p.rss),p.user,p.state,QString::number(p.nice)};for(auto &v:cols){v.replace(QChar(34),QString("\"\""));v=QString("\"")+v+QString("\"");}out<<cols.join(',')<<"\n";}statusBar()->showMessage(T("Export CSV terminé","CSV export completed"),4000);}
  void closeEvent(QCloseEvent *e)override{settings.setValue("geometry",saveGeometry());QMainWindow::closeEvent(e);}
 };
 
